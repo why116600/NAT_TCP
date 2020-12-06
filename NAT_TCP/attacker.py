@@ -43,19 +43,20 @@ def main():
 	finally:
 		transfer_socket.close()
 
-	my_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-	my_socket.settimeout(3)
-	print('connect to ',target_addr[0])
 	for i in range(10):
 		try:
+			my_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+			my_socket.settimeout(1)
+			print(i,':connect to ',target_addr[0])
 			my_socket.connect(target_addr[0])
 			print('connected to the server:',target_addr[0])
 			while True:
 				my_socket.send('Hello!NAT!'.encode())
 				time.sleep(1)
-		except BaseException:
-			print('exception happend!')
-			time.sleep(1)
+		except BaseException as e:
+			print('exception happend!',repr(e))
+			my_socket.close()
+			#time.sleep(1)
 
 if __name__=='__main__':
 	main()

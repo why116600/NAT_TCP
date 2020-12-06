@@ -42,8 +42,8 @@ def main():
                 elif cli_type[0]==2:
                     print('got attacker client:',cli)
                     attacker.append(cli)
-                    BroadcastAddress(attacker,defender)
                     BroadcastAddress(defender,attacker)
+                    BroadcastAddress(attacker,defender)
                 else:
                     print('wrong client')
                     cli[0].close()

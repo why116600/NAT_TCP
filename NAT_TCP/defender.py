@@ -54,25 +54,30 @@ def main():
 			print('go through ',cli)
 			test_socket.connect(cli)
 			#test_socket.close()
-		except BaseException:
+		except BaseException as e:
+			print('cannot connect of course:',repr(e))
 			continue
 	
-	print('listen to port ',myport)
+	trans_addr=transfer_socket.getsockname()
+	test_addr=test_socket.getsockname()
+	#myport=test_addr[1]
+	print('listen to ',(trans_addr[0],test_addr[1]))
 	server_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 	server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-	server_socket.bind(('0.0.0.0',myport))
+	server_socket.bind((trans_addr[0],test_addr[1]))
 	server_socket.listen(0)
 	while True:
 		try:
 			cli=server_socket.accept()
+			skt=cli[0]
 			print('got client:',cli[1])
 			while True:
 				data=cli[0].recv(1000)
 				s=data.decode()
 				print('received message:',s)
 		except BaseException as e:
-			print('end with ',e)
-			cli[0].close()
+			print('end with ',repr(e))
+			skt.close()
 			break
 	server_socket.close()
 	transfer_socket.close()
