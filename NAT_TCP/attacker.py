@@ -18,6 +18,8 @@ def ReceiveData(skt,dataLen):
 def main():
 	server_addr=(sys.argv[1],int(sys.argv[2]))
 	transfer_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+	transfer_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+	transfer_socket.settimeout(1)
 	target_addr=[]
 	try:
 		transfer_socket.connect(server_addr)
@@ -28,7 +30,7 @@ def main():
 			myport,nCli=struct.unpack('=Hi',data)
 			if nCli<0:
 				print('wrong transfer server!')
-				pass
+				return
 		for i in range(nCli):
 			data=ReceiveData(transfer_socket,4)
 			iplen=struct.unpack('i',data)
@@ -39,13 +41,15 @@ def main():
 			target_addr.append((strIP,port[0]))
 	except BaseException as e:
 		print('transfer server socket exception:',repr(e))
-		pass
-	finally:
-		transfer_socket.close()
+		return
 
-	for i in range(10):
+	
+	trans_addr=transfer_socket.getsockname()
+	for i in range(20):
 		try:
 			my_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+			my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+			my_socket.bind(trans_addr)
 			my_socket.settimeout(1)
 			print(i,':connect to ',target_addr[0])
 			my_socket.connect(target_addr[0])
@@ -55,8 +59,12 @@ def main():
 				time.sleep(1)
 		except BaseException as e:
 			print('exception happend!',repr(e))
-			my_socket.close()
 			#time.sleep(1)
+		finally:
+			my_socket.close()
+
+
+	transfer_socket.close()
 
 if __name__=='__main__':
 	main()

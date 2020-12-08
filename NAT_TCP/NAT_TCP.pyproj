@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>869fed8c-c9e1-47fb-a8df-f09304a370ad</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>defender.py</StartupFile>
+    <StartupFile>PacketListener.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -26,6 +26,9 @@
   <ItemGroup>
     <Compile Include="attacker.py" />
     <Compile Include="defender.py" />
+    <Compile Include="PacketListener.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="whole_server.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

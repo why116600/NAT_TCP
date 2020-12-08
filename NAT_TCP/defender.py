@@ -45,10 +45,12 @@ def main():
 		print('transfer server socket exception:',repr(e))
 		return
 
+	trans_addr=transfer_socket.getsockname()
 	print('got my port:',myport)
 	test_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 	#test_socket.settimeout(1)
 	test_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+	test_socket.bind(trans_addr)
 	for cli in client_addr:
 		try:
 			print('go through ',cli)
@@ -58,13 +60,13 @@ def main():
 			print('cannot connect of course:',repr(e))
 			continue
 	
-	trans_addr=transfer_socket.getsockname()
 	test_addr=test_socket.getsockname()
+	listen_addr=trans_addr
 	#myport=test_addr[1]
-	print('listen to ',(trans_addr[0],test_addr[1]))
+	print('listen to ',listen_addr)
 	server_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 	server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-	server_socket.bind((trans_addr[0],test_addr[1]))
+	server_socket.bind(listen_addr)
 	server_socket.listen(0)
 	while True:
 		try:
