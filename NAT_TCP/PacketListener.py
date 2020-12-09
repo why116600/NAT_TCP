@@ -1,5 +1,29 @@
 import socket
 import struct
+import sys
+import json
+
+class PACKET_FILTER:
+	def __init__(self):
+		self.filter_data={}
+
+	def load_file(self,filename):
+		with open(filename,'r') as fp:
+			json_str=fp.readline()
+		self.filter_data=json.loads(json_str)
+
+	def check_tcp(self,tcp_header):
+		src_port=-1
+		dst_port=-1
+		if 'src_port' in self.filter_data.keys():
+			src_port=self.filter_data['src_port']
+		if 'dst_port' in self.filter_data.keys():
+			dst_port=self.filter_data['dst_port']
+		if src_port>=0 and tcp_header.src_port==src_port:
+			return True
+		if dst_port>=0 and tcp_header.dst_port==dst_port:
+			return True
+		return src_port<0 and dst_port<0
 
 class IP_HEADER:
 	def __init__(self,data):
@@ -57,6 +81,9 @@ class TCP_HEADER:
 		return self.to_string
 
 def main():
+	filter=PACKET_FILTER()
+	if len(sys.argv)>1:
+		filter.load_file(sys.argv[1])
 	ip_offset=0
 	try:
 		try:
@@ -82,6 +109,10 @@ def main():
 				tcp_header=TCP_HEADER(buffer[pos:])
 				show_text+=','+tcp_header.to_string()
 				pos+=20
+				if not filter.check_tcp(tcp_header):
+					continue
+			else:
+				continue
 			print(show_text)
 			print(buffer[pos:])
 	except BaseException as e:
