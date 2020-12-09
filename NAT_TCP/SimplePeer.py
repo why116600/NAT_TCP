@@ -16,6 +16,7 @@ def traverse_thread(addr1,addr2):
 	while _bRunning:
 		try:
 			skt.connect(addr2)
+			print('connected to the other peer-',addr2)
 			while _bRunning:
 				skt.send('Hello!NAT!'.encode())
 				time.sleep(1)
