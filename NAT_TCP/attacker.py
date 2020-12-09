@@ -19,7 +19,7 @@ def main():
 	server_addr=(sys.argv[1],int(sys.argv[2]))
 	transfer_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 	transfer_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-	transfer_socket.settimeout(1)
+	#transfer_socket.settimeout(1)
 	target_addr=[]
 	try:
 		transfer_socket.connect(server_addr)
@@ -27,6 +27,9 @@ def main():
 		nCli=0
 		while nCli<=0:
 			data=ReceiveData(transfer_socket,6)
+			if len(data)<=0 or data==b'':
+				print('wrong server data!')
+				return
 			myport,nCli=struct.unpack('=Hi',data)
 			if nCli<0:
 				print('wrong transfer server!')

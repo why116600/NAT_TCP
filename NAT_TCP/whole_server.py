@@ -39,6 +39,7 @@ def main():
                     print('got defender client:',cli)
                     defender.append(cli)
                     BroadcastAddress(defender,attacker)
+                    BroadcastAddress(attacker,defender)
                 elif cli_type[0]==2:
                     print('got attacker client:',cli)
                     attacker.append(cli)
