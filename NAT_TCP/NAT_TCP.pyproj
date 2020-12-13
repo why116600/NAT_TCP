@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>869fed8c-c9e1-47fb-a8df-f09304a370ad</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PacketListener.py</StartupFile>
+    <StartupFile>P2PClient.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -14,6 +14,7 @@
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <CommandLineArguments>139.159.133.169 1234</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,6 +27,8 @@
   <ItemGroup>
     <Compile Include="attacker.py" />
     <Compile Include="defender.py" />
+    <Compile Include="P2PClient.py" />
+    <Compile Include="P2PServer.py" />
     <Compile Include="PacketListener.py">
       <SubType>Code</SubType>
     </Compile>
