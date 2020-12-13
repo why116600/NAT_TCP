@@ -19,6 +19,7 @@ def main():
 			cli=main_skt.accept()
 			clients.append(cli)
 			if (len(clients)%2)==0:
+				print('got a p2p between ',clients[-1][1],' and ',clients[-2][1])
 				clients[-1][0].send(EncodeAddr(clients[-2][1]))
 				clients[-2][0].send(EncodeAddr(clients[-1][1]))
 	except BaseException as e:

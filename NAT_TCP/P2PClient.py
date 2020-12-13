@@ -18,7 +18,7 @@ def ReceiveFrom(skt,data_len):
 	return buffer
 
 def HoleThread(skt,target_addr):
-	print('start traverse!')
+	print('start traverse to ',target_addr)
 	try:
 		skt.connect(target_addr)
 		print('connected to ',target_addr)
